@@ -19,11 +19,12 @@ builder.Services.AddApiVersioning(opt =>
     opt.AssumeDefaultVersionWhenUnspecified = true;
     opt.DefaultApiVersion = ApiVersion.Default;
 });
+builder.Services.AddCors();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
 app.UseHttpsRedirection();
-app.UseAuthorization();
 app.UseApiVersioning();
 
 app.MapControllers();
