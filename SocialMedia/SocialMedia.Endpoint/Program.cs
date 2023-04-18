@@ -22,7 +22,6 @@ builder.Services.AddApiVersioning(opt =>
 builder.Services.AddCors();
 
 var app = builder.Build();
-
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
 app.UseHttpsRedirection();
 app.UseApiVersioning();
