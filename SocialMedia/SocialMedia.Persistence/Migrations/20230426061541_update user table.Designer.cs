@@ -12,8 +12,8 @@ using SocialMedia.Persistence;
 namespace SocialMedia.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230414051906_update users table")]
-    partial class updateuserstable
+    [Migration("20230426061541_update user table")]
+    partial class updateusertable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,11 +39,23 @@ namespace SocialMedia.Persistence.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

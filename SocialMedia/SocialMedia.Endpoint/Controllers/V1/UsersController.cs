@@ -26,13 +26,6 @@ public class UsersController : BaseController
         return user;
     }
 
-    [HttpPost]
-    public async Task<ActionResult<AppUser>> CreateUser(AppUser user)
-    {
-       await _context.Users.AddAsync(user);
-       await _context.SaveChangesAsync();
-        return Ok(user);
-    }
 
 }
     
