@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialMedia.Persistence;
@@ -5,12 +6,13 @@ using SocialMedia.Persistence.Entities;
 
 namespace SocialMedia.Endpoint.Controllers.V1;
 
+[Authorize]
 public class UsersController : BaseController
 {
     public UsersController(DataContext context) : base(context)
     {
     }
-
+    
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
     {
@@ -19,6 +21,7 @@ public class UsersController : BaseController
 
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<ActionResult<AppUser>> GetUser(Guid id)
     {
