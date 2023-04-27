@@ -14,6 +14,7 @@ public class UsersController : BaseController
     {
     }
     
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserReturnDto>>> GetUsers()
     {
@@ -36,7 +37,6 @@ public class UsersController : BaseController
 
     }
 
-    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<ActionResult<UserReturnDto>> GetUser(Guid id)
     {
