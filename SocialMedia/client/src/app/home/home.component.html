@@ -11,7 +11,7 @@
     <div *ngIf="registerMode" class="cotainer">
         <div class="row justify-content-center">
             <div class="col-4">
-                <p>Register form goes here</p>
+                <app-register [usersFromHomeComponet]="users" (cancelRegister)="cancelRegisterMode($event)"></app-register>
             </div>
         </div>
     </div>
