@@ -12,8 +12,8 @@ using SocialMedia.Persistence;
 namespace SocialMedia.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230525041130_update users")]
-    partial class updateusers
+    [Migration("20230525064502_new migration")]
+    partial class newmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -105,7 +105,6 @@ namespace SocialMedia.Persistence.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("PublicId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
@@ -115,7 +114,6 @@ namespace SocialMedia.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Url")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
