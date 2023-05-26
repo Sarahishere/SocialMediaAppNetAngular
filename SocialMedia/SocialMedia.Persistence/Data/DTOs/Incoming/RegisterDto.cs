@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 
-namespace SocialMedia.Persistence.DTOs.Incoming
+namespace SocialMedia.Persistence.Data.DTOs.Incoming
 {
     public class RegisterDto
     {

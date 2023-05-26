@@ -1,6 +1,6 @@
 
 
-namespace SocialMedia.Persistence.DTOs.Outgoing
+namespace SocialMedia.Persistence.Data.DTOs.Outgoing
 {
     public class AuthReturnDto
     {

@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialMedia.Persistence;
+using SocialMedia.Persistence.Interfaces;
 
 namespace SocialMedia.Endpoint.Controllers.V1
 {
     //this controller is for testing error handling middleware
     public class BuggyController : BaseController
     {
-        public BuggyController(DataContext context) : base(context)
+        public BuggyController(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
         
@@ -29,7 +30,7 @@ namespace SocialMedia.Endpoint.Controllers.V1
         public ActionResult<string> GetServerError()
         {
             var id = Guid.NewGuid();
-            var nullUser = _context.Users.Find(id);
+            var nullUser = _unitOfWork.Users.GetByIdAsync(id);
             return nullUser.ToString();
         }
 

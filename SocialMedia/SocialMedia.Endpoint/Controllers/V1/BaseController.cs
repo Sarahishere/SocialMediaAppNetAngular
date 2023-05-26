@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using SocialMedia.Persistence;
+using SocialMedia.Persistence.Interfaces;
 
 namespace SocialMedia.Endpoint.Controllers.V1;
 
@@ -9,9 +10,9 @@ namespace SocialMedia.Endpoint.Controllers.V1;
 [Route("api/v{version:apiVersion}/[controller]")]
  public class BaseController : ControllerBase
  {
-    protected readonly DataContext? _context;
-    public BaseController(DataContext context)
+    protected readonly IUnitOfWork _unitOfWork;
+    public BaseController(IUnitOfWork unitOfWork)
     {
-        _context = context;
+        _unitOfWork = unitOfWork;
     }
  }

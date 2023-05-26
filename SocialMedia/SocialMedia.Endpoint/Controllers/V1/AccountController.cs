@@ -4,8 +4,8 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialMedia.Persistence;
-using SocialMedia.Persistence.DTOs.Incoming;
-using SocialMedia.Persistence.DTOs.Outgoing;
+using SocialMedia.Persistence.Data.DTOs.Incoming;
+using SocialMedia.Persistence.Data.DTOs.Outgoing;
 using SocialMedia.Persistence.Entities;
 using SocialMedia.Persistence.Interfaces;
 
@@ -15,7 +15,7 @@ namespace SocialMedia.Endpoint.Controllers.V1
     {
         private ITokenService _tokenService;
 
-        public AccountController(DataContext context, ITokenService tokenService) : base(context)
+        public AccountController(IUnitOfWork unitOfWork, ITokenService tokenService) : base(unitOfWork)
         {
             _tokenService = tokenService;
         }
@@ -23,8 +23,9 @@ namespace SocialMedia.Endpoint.Controllers.V1
     [HttpPost("register")]
     public async Task<ActionResult<AuthReturnDto>> RegisterUser(RegisterDto registerDto)
     {
+        var existUser = await _unitOfWork.Users.GetByUsername(registerDto.UserName.ToLower());
       
-       if (await UserExists(registerDto.UserName))
+       if (existUser != null)
        {
         return BadRequest("Username already exist");
        }
@@ -37,8 +38,8 @@ namespace SocialMedia.Endpoint.Controllers.V1
         PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
         PasswordSalt = hmac.Key
        };
-       await _context.Users.AddAsync(user);
-       await _context.SaveChangesAsync();
+       await _unitOfWork.Users.CreateAsync(user);
+       await _unitOfWork.SaveAllAsync();
 
        return new AuthReturnDto
        {
@@ -50,7 +51,7 @@ namespace SocialMedia.Endpoint.Controllers.V1
     [HttpPost("login")]
     public async Task<ActionResult<AuthReturnDto>> Login(LoginDto loginDto)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.UserName);
+        var user = await _unitOfWork.Users.GetByUsername(loginDto.UserName.ToLower());
         
         if (user == null) return BadRequest("User does not exist");
         
@@ -66,11 +67,6 @@ namespace SocialMedia.Endpoint.Controllers.V1
             UserName = user.UserName,
             Token = _tokenService.CreateToken(user)
         };
-    }
-
-    private async Task<bool> UserExists(string userName)
-    {
-        return await _context.Users.AnyAsync(x => x.UserName == userName.ToLower());
     }
 
     }

@@ -2,25 +2,26 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialMedia.Persistence;
-using SocialMedia.Persistence.DTOs.Outgoing;
+using SocialMedia.Persistence.Data.DTOs.Outgoing;
 using SocialMedia.Persistence.Entities;
+using SocialMedia.Persistence.Interfaces;
 
 namespace SocialMedia.Endpoint.Controllers.V1;
 
 [Authorize]
 public class UsersController : BaseController
 {
-    public UsersController(DataContext context) : base(context)
+    public UsersController(IUnitOfWork unitOfWork) : base(unitOfWork)
     {
     }
     
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserReturnDto>>> GetUsers()
+    public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
     {
       
-      var userList = await _context.Users.Where( x => x.Status ==1).ToListAsync();
-      var userReturnDtoList = new List<UserReturnDto>();
+      var userList = await _unitOfWork.Users.GetAllAsync();
+     /* var userReturnDtoList = new List<UserReturnDto>();
       foreach ( var user in userList)
       {
         userReturnDtoList.Add(new UserReturnDto
@@ -31,24 +32,16 @@ public class UsersController : BaseController
           CreateDate = user.CreateDate,
           UpdateDate = user.UpdateDate
         });
-      }
+      } */
 
-       return userReturnDtoList;
-
+       return Ok(userList);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserReturnDto>> GetUser(Guid id)
+    public async Task<ActionResult<AppUser>> GetUser(Guid id)
     {
-        var user = await _context.Users.FindAsync(id);
-        return new UserReturnDto
-        {
-          UserName = user.UserName,
-          FirstName = user.FirstName,
-          LastName = user.LastName,
-          CreateDate = user.CreateDate,
-          UpdateDate = user.UpdateDate
-        };
+        var user = await _unitOfWork.Users.GetByIdAsync(id);
+        return user;
     }
 
 
