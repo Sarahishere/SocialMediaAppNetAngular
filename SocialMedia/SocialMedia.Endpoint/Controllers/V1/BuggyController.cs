@@ -1,4 +1,5 @@
 
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialMedia.Persistence;
@@ -9,7 +10,7 @@ namespace SocialMedia.Endpoint.Controllers.V1
     //this controller is for testing error handling middleware
     public class BuggyController : BaseController
     {
-        public BuggyController(IUnitOfWork unitOfWork) : base(unitOfWork)
+        public BuggyController(IUnitOfWork unitOfWork,IMapper mapper) : base(unitOfWork,mapper)
         {
         }
         

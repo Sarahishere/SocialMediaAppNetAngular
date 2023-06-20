@@ -1,9 +1,7 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SocialMedia.Persistence;
 using SocialMedia.Persistence.Data.DTOs.Outgoing;
-using SocialMedia.Persistence.Entities;
 using SocialMedia.Persistence.Interfaces;
 
 namespace SocialMedia.Endpoint.Controllers.V1;
@@ -11,37 +9,28 @@ namespace SocialMedia.Endpoint.Controllers.V1;
 [Authorize]
 public class UsersController : BaseController
 {
-    public UsersController(IUnitOfWork unitOfWork) : base(unitOfWork)
+   
+
+    public UsersController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork,mapper)
     {
     }
     
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+    public async Task<ActionResult<IEnumerable<UserReturnDto>>> GetUsers()
     {
       
       var userList = await _unitOfWork.Users.GetAllAsync();
-     /* var userReturnDtoList = new List<UserReturnDto>();
-      foreach ( var user in userList)
-      {
-        userReturnDtoList.Add(new UserReturnDto
-        {
-          UserName = user.UserName,
-          FirstName = user.FirstName,
-          LastName = user.LastName,
-          CreateDate = user.CreateDate,
-          UpdateDate = user.UpdateDate
-        });
-      } */
+      var userReturnDto = _mapper.Map<IEnumerable<UserReturnDto>>(userList);
 
-       return Ok(userList);
+       return Ok(userReturnDto);
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<AppUser>> GetUser(Guid id)
+    [HttpGet("{username}")]
+    public async Task<ActionResult<UserReturnDto>> GetUser(string username)
     {
-        var user = await _unitOfWork.Users.GetByIdAsync(id);
-        return user;
+        var user = await _unitOfWork.Users.GetByUsername(username);
+        return _mapper.Map<UserReturnDto>(user);
     }
 
 

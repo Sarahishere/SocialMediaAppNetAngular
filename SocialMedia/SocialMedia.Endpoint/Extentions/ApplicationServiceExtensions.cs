@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialMedia.Persistence;
+using SocialMedia.Persistence.Data;
 using SocialMedia.Persistence.Interfaces;
 using SocialMedia.Persistence.Services;
 
@@ -25,7 +26,11 @@ namespace SocialMedia.Endpoint.Extentions
             });
             services.AddCors();
             services.AddScoped<ITokenService,TokenService>();
-               return services;
+            services.AddScoped<IUnitOfWork , UnitOfWork>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            
+            return services;
+            
         }
     }
 }

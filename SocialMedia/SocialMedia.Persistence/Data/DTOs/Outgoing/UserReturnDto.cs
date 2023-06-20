@@ -4,8 +4,10 @@ namespace SocialMedia.Persistence.Data.DTOs.Outgoing
     public class UserReturnDto
     {
         public string UserName { get; set; } = "";
+
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public string? PhotoUrl { get; set; }
         public int age { get; set; }
         public DateTime CreateDate {get; set;} 
         public DateTime UpdateDate { get; set; } 

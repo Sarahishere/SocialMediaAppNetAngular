@@ -1,9 +1,8 @@
 
 using System.Security.Cryptography;
 using System.Text;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SocialMedia.Persistence;
 using SocialMedia.Persistence.Data.DTOs.Incoming;
 using SocialMedia.Persistence.Data.DTOs.Outgoing;
 using SocialMedia.Persistence.Entities;
@@ -15,7 +14,10 @@ namespace SocialMedia.Endpoint.Controllers.V1
     {
         private ITokenService _tokenService;
 
-        public AccountController(IUnitOfWork unitOfWork, ITokenService tokenService) : base(unitOfWork)
+        public AccountController(
+            IUnitOfWork unitOfWork, 
+            ITokenService tokenService,
+            IMapper mapper) : base(unitOfWork, mapper)
         {
             _tokenService = tokenService;
         }
