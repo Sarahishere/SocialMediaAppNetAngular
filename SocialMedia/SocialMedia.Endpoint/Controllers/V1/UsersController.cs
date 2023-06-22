@@ -15,7 +15,6 @@ public class UsersController : BaseController
     {
     }
     
-    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserReturnDto>>> GetUsers()
     {
